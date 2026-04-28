@@ -5,14 +5,12 @@
    ================================================================= */
 
 /* -----------------------------------------------------------------
-   GITHUB CONFIG
-   Visitors fetch /data.json from the CDN (fast, edge-served).
-   Admin saves update data.json in the repo via GitHub API.
+   SAVE ENDPOINT
+   All saves go to /api/save — a Cloudflare Pages Function that
+   holds the GitHub token server-side. No token ever reaches the browser.
+   When running locally (python -m http.server) saves will be skipped
+   gracefully with a notice.
 ----------------------------------------------------------------- */
-const GH_OWNER  = 'krugerco';
-const GH_REPO   = 'ten-wasp-brewing';
-const GH_BRANCH = 'main';
-const GH_FILE   = 'data.json';
 
 /* -----------------------------------------------------------------
    FALLBACK DEFAULTS  (used only if data.json can't be fetched)
@@ -57,8 +55,7 @@ const DEFAULT_HOURS = [
 const DEFAULT_ANNOUNCEMENT = { text: '', active: false };
 
 const ADMIN_PASSWORD = 'wasp2024';
-const CACHE_KEY      = 'tenwasp_cache';      // localStorage cache of remote data
-const GH_TOKEN_KEY   = 'tenwasp_gh_token';   // localStorage GitHub PAT (admin device only)
+const CACHE_KEY      = 'tenwasp_cache'; // localStorage mirror of last-fetched data.json
 
 /* -----------------------------------------------------------------
    DATA LAYER
@@ -101,49 +98,28 @@ async function fetchRemoteData() {
 }
 
 /**
- * Pushes updated data.json to GitHub via the Contents API.
- * Cloudflare Pages detects the commit and redeploys (~30s).
- * Requires a GitHub Personal Access Token stored in admin's localStorage.
+ * Sends updated data to the Cloudflare Pages Function at /api/save.
+ * The function holds the GitHub token server-side — nothing sensitive
+ * is ever stored or transmitted from the browser except the password.
+ * Works from any device, any browser, anywhere.
  */
 async function pushToGitHub(data) {
-  const token = localStorage.getItem(GH_TOKEN_KEY);
-  if (!token) {
-    return { ok: false, msg: 'No GitHub token set. Go to Admin → ⚙ Sync and add your token.' };
-  }
-
   try {
-    const apiBase = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
-    const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github+json' };
-
-    // Get current file SHA (required for update)
-    const metaRes = await fetch(apiBase, { headers });
-    if (!metaRes.ok) {
-      const e = await metaRes.json().catch(() => ({}));
-      return { ok: false, msg: `GitHub error: ${e.message || metaRes.status}. Check your token has Contents: Write permission.` };
-    }
-    const { sha } = await metaRes.json();
-
-    // Base64-encode the JSON content
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-
-    // Commit the update
-    const putRes = await fetch(apiBase, {
-      method: 'PUT',
-      headers,
-      body: JSON.stringify({
-        message: `Update site content — ${new Date().toLocaleString()}`,
-        content,
-        sha,
-        branch: GH_BRANCH,
-      }),
+    const res = await fetch('/api/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: ADMIN_PASSWORD, data }),
     });
 
-    if (putRes.ok) {
-      return { ok: true, msg: '✓ Saved to GitHub! Site updates for all visitors in ~30 seconds.' };
+    // Running locally — /api/save doesn't exist in dev mode
+    if (res.status === 404 || res.status === 0) {
+      return {
+        ok: false,
+        msg: 'ℹ Local preview — saves work once deployed to Cloudflare Pages.',
+      };
     }
-    const err = await putRes.json().catch(() => ({}));
-    return { ok: false, msg: `Save failed: ${err.message || putRes.status}` };
 
+    return await res.json();
   } catch (e) {
     return { ok: false, msg: `Network error: ${e.message}` };
   }
@@ -516,7 +492,6 @@ function initAdmin(appData) {
     renderAdminFood();
     renderAdminHours();
     renderAdminAnnouncement();
-    renderAdminSettings();
   }
 
   /* ── Login ── */
@@ -788,50 +763,6 @@ function initAdmin(appData) {
     });
   }
 
-  /* ---------------------------------------------------------------
-     SYNC / SETTINGS TAB
-  --------------------------------------------------------------- */
-  function renderAdminSettings() {
-    const input   = document.getElementById('admin-gh-token-input');
-    const saveBtn = document.getElementById('admin-save-token');
-    const testBtn = document.getElementById('admin-test-sync');
-    if (!input) return;
-
-    // Pre-fill with stored token (masked)
-    const stored = localStorage.getItem(GH_TOKEN_KEY) || '';
-    input.value  = stored ? stored : '';
-
-    const saveH = saveBtn.cloneNode(true);
-    saveBtn.parentNode.replaceChild(saveH, saveBtn);
-    saveH.addEventListener('click', () => {
-      const val = input.value.trim();
-      if (val) {
-        localStorage.setItem(GH_TOKEN_KEY, val);
-        showToast('Token saved on this device.', 'success');
-      } else {
-        localStorage.removeItem(GH_TOKEN_KEY);
-        showToast('Token removed.', 'info');
-      }
-    });
-
-    const testH = testBtn.cloneNode(true);
-    testBtn.parentNode.replaceChild(testH, testBtn);
-    testH.addEventListener('click', async () => {
-      showToast('Testing connection…', 'info');
-      const token = localStorage.getItem(GH_TOKEN_KEY);
-      if (!token) { showToast('No token saved yet.', 'error'); return; }
-      try {
-        const res = await fetch(
-          `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        if (res.ok) showToast('✓ Connection works! GitHub is ready.', 'success');
-        else        showToast(`Connection failed (${res.status}). Check your token.`, 'error');
-      } catch {
-        showToast('Network error. Check your internet connection.', 'error');
-      }
-    });
-  }
 }
 
 /* -----------------------------------------------------------------
