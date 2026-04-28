@@ -139,6 +139,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initStats();
   initScrollReveal();
   initCommunityGoal();
+  initBeerFilters(appData.beers);
 
   // ── Step 2: Fetch fresh data from CDN in background ──
   const fresh = await fetchRemoteData();
@@ -148,6 +149,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (JSON.stringify(fresh) !== JSON.stringify(appData)) {
       appData = fresh;
       renderAll(appData);
+      initBeerFilters(appData.beers);
     }
   }
 
