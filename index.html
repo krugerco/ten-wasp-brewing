@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ten Wasp Brewing Company — Sumner, Iowa</title>
+  <meta name="description" content="Ten Wasp Brewing Company — Sumner's first brewery. Craft beer, house-made root beer, pizza, and community. 112 W 1st St, Sumner, IA.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Playfair+Display:ital,wght@0,700;1,400&family=Lato:wght@300;400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- ================================================================
+     ANNOUNCEMENT BANNER (admin-controlled)
+     ================================================================ -->
+<div id="announcement-bar" class="announcement-bar hidden" role="banner" aria-live="polite">
+  <button class="announcement-bar__close" aria-label="Close announcement">×</button>
+</div>
+
+<!-- ================================================================
+     NAVIGATION
+     ================================================================ -->
+<nav id="main-nav" class="nav" role="navigation" aria-label="Main navigation">
+  <div class="nav__inner">
+
+    <!-- Logo -->
+    <a href="#hero" class="nav__logo" aria-label="Ten Wasp Brewing Company — Home">
+      <!-- Small wasp SVG matching brand logo style -->
+      <svg class="nav__logo-wasp" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Antennae -->
+        <path d="M43,16 Q32,7 25,4" stroke="#F0C020" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M57,16 Q68,7 75,4" stroke="#F0C020" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="25" cy="4" r="3" fill="#F0C020"/>
+        <circle cx="75" cy="4" r="3" fill="#F0C020"/>
+        <!-- Head -->
+        <ellipse cx="50" cy="24" rx="16" ry="12" fill="white"/>
+        <ellipse cx="41" cy="21" rx="5" ry="6" fill="#C0D8F0"/>
+        <ellipse cx="59" cy="21" rx="5" ry="6" fill="#C0D8F0"/>
+        <!-- Upper wings -->
+        <path d="M38,38 C22,26 8,28 3,36 C0,44 8,52 22,50 C32,48 38,44 38,44" fill="white" opacity="0.85"/>
+        <path d="M62,38 C78,26 92,28 97,36 C100,44 92,52 78,50 C68,48 62,44 62,44" fill="white" opacity="0.85"/>
+        <!-- Lower wings -->
+        <path d="M38,46 C26,42 18,48 16,56 C15,62 22,66 32,64 C38,62 39,54 39,54" fill="white" opacity="0.7"/>
+        <path d="M62,46 C74,42 82,48 84,56 C85,62 78,66 68,64 C62,62 61,54 61,54" fill="white" opacity="0.7"/>
+        <!-- Thorax -->
+        <rect x="35" y="30" width="30" height="28" rx="6" fill="white"/>
+        <!-- "10" on thorax -->
+        <text x="50" y="47" text-anchor="middle" dominant-baseline="middle" font-family="Georgia,serif" font-weight="bold" font-size="14" fill="#F0C020">10</text>
+        <!-- Abdomen -->
+        <path d="M42,58 Q35,68 34,82 Q34,96 42,108 Q46,116 50,119 Q54,116 58,108 Q66,96 66,82 Q65,68 58,58 Z" fill="white"/>
+        <!-- Abdomen stripes -->
+        <line x1="35" y1="72" x2="65" y2="72" stroke="#C0D8F0" stroke-width="2"/>
+        <line x1="35" y1="84" x2="65" y2="84" stroke="#C0D8F0" stroke-width="2"/>
+        <line x1="36" y1="96" x2="64" y2="96" stroke="#C0D8F0" stroke-width="2"/>
+      </svg>
+      <div class="nav__logo-text">
+        <span class="nav__logo-name">TEN WASP</span>
+        <span class="nav__logo-sub">Brewing Company</span>
+      </div>
+    </a>
+
+    <!-- Desktop nav links -->
+    <ul class="nav__links" role="list">
+      <li><a href="#story">Our Story</a></li>
+      <li><a href="#on-tap">On Tap</a></li>
+      <li><a href="#kitchen">Kitchen</a></li>
+      <li><a href="#events">Events</a></li>
+      <li><a href="#visit">Visit Us</a></li>
+    </ul>
+
+    <a href="tel:+15635789015" class="nav__cta" aria-label="Call us: (563) 578-9015">Call Us</a>
+
+    <button class="nav__hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<main>
+
+<!-- ================================================================
+     HERO
+     ================================================================ -->
+<section id="hero" class="hero" aria-label="Welcome to Ten Wasp Brewing Company">
+
+  <!-- Left: brand content -->
+  <div class="hero__content-side">
+    <canvas id="hex-particles" aria-hidden="true"></canvas>
+    <div class="hero__content">
+
+      <!-- Brand wasp logo (large) -->
+      <svg class="hero__wasp-logo" viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" aria-label="Ten Wasp Brewing Company logo wasp" role="img">
+        <!-- Antennae -->
+        <path d="M85,30 Q68,14 55,8" stroke="#F0C020" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <path d="M115,30 Q132,14 145,8" stroke="#F0C020" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <circle cx="55" cy="8"  r="5" fill="#F0C020"/>
+        <circle cx="145" cy="8" r="5" fill="#F0C020"/>
+        <!-- Head -->
+        <ellipse cx="100" cy="50" rx="32" ry="26" fill="white"/>
+        <ellipse cx="80"  cy="43" rx="11" ry="13" fill="rgba(176,210,240,0.6)"/>
+        <ellipse cx="120" cy="43" rx="11" ry="13" fill="rgba(176,210,240,0.6)"/>
+        <path d="M80,68 Q100,73 120,68" stroke="rgba(255,255,255,0.4)" stroke-width="2" fill="none"/>
+        <!-- Upper wings -->
+        <path d="M68,90 C42,62 14,60 3,74 C-4,86 6,104 28,102 C50,100 66,92 68,92" fill="white" opacity="0.8"/>
+        <line x1="68" y1="90" x2="18" y2="76" stroke="rgba(176,210,240,0.5)" stroke-width="1.5"/>
+        <line x1="67" y1="95" x2="6"  y2="88" stroke="rgba(176,210,240,0.5)" stroke-width="1.5"/>
+        <line x1="30" y1="62" x2="14" y2="98" stroke="rgba(176,210,240,0.4)" stroke-width="1"/>
+        <line x1="48" y1="60" x2="38" y2="100" stroke="rgba(176,210,240,0.4)" stroke-width="1"/>
+        <path d="M132,90 C158,62 186,60 197,74 C204,86 194,104 172,102 C150,100 134,92 132,92" fill="white" opacity="0.8"/>
+        <line x1="132" y1="90" x2="182" y2="76" stroke="rgba(176,210,240,0.5)" stroke-width="1.5"/>
+        <line x1="133" y1="95" x2="194" y2="88" stroke="rgba(176,210,240,0.5)" stroke-width="1.5"/>
+        <line x1="170" y1="62" x2="186" y2="98" stroke="rgba(176,210,240,0.4)" stroke-width="1"/>
+        <line x1="152" y1="60" x2="162" y2="100" stroke="rgba(176,210,240,0.4)" stroke-width="1"/>
+        <!-- Lower wings -->
+        <path d="M68,103 C48,96 34,105 28,118 C24,130 34,138 52,136 C64,134 68,120 68,120" fill="white" opacity="0.65"/>
+        <line x1="68" y1="103" x2="32" y2="112" stroke="rgba(176,210,240,0.4)" stroke-width="1"/>
+        <line x1="68" y1="114" x2="28" y2="122" stroke="rgba(176,210,240,0.4)" stroke-width="1"/>
+        <path d="M132,103 C152,96 166,105 172,118 C176,130 166,138 148,136 C136,134 132,120 132,120" fill="white" opacity="0.65"/>
+        <line x1="132" y1="103" x2="168" y2="112" stroke="rgba(176,210,240,0.4)" stroke-width="1"/>
+        <line x1="132" y1="114" x2="172" y2="122" stroke="rgba(176,210,240,0.4)" stroke-width="1"/>
+        <!-- Thorax -->
+        <path d="M65,64 Q64,56 100,54 Q136,56 135,64 L137,118 Q137,126 100,128 Q63,126 63,118 Z" fill="white"/>
+        <!-- Thorax details -->
+        <line x1="72" y1="76"  x2="128" y2="76"  stroke="rgba(176,210,240,0.5)" stroke-width="1.5"/>
+        <line x1="70" y1="116" x2="130" y2="116" stroke="rgba(176,210,240,0.5)" stroke-width="1.5"/>
+        <!-- Gold "10" badge -->
+        <ellipse cx="100" cy="95" rx="22" ry="17" fill="#F0C020"/>
+        <text x="100" y="100" text-anchor="middle" dominant-baseline="middle" font-family="Georgia,'Times New Roman',serif" font-weight="900" font-size="22" fill="#0D2E5A">10</text>
+        <!-- Petiole -->
+        <path d="M90,128 L88,140 Q88,147 100,149 Q112,147 112,140 L110,128 Z" fill="white"/>
+        <!-- Abdomen -->
+        <path d="M78,151 Q62,168 60,192 Q60,216 74,236 Q84,252 100,262 Q116,252 126,236 Q140,216 140,192 Q138,168 122,151 Q111,146 100,146 Q89,146 78,151 Z" fill="white"/>
+        <!-- Abdomen stripes -->
+        <path d="M62,182 Q80,174 100,177 Q120,174 138,182" stroke="rgba(176,210,240,0.6)" stroke-width="2" fill="none"/>
+        <path d="M61,202 Q79,192 100,196 Q121,192 139,202" stroke="rgba(176,210,240,0.6)" stroke-width="2" fill="none"/>
+        <path d="M64,222 Q80,213 100,216 Q120,213 136,222" stroke="rgba(176,210,240,0.6)" stroke-width="2" fill="none"/>
+        <path d="M72,240 Q85,232 100,235 Q115,232 128,240" stroke="rgba(176,210,240,0.5)" stroke-width="1.5" fill="none"/>
+        <!-- Wave interior details -->
+        <path d="M63,190 Q78,198 100,190 Q122,198 137,190" stroke="rgba(176,210,240,0.3)" stroke-width="1" fill="none"/>
+        <path d="M62,210 Q78,218 100,210 Q122,218 138,210" stroke="rgba(176,210,240,0.3)" stroke-width="1" fill="none"/>
+      </svg>
+
+      <p class="hero__eyebrow">Sumner, Iowa · Est. February 2024</p>
+      <h1 class="hero__title">
+        Ten Wasp<br>
+        <span>Brewing Co.</span>
+      </h1>
+      <p class="hero__tagline">Sumner's first brewery — crafted with passion, poured with pride.</p>
+      <div class="hero__badges">
+        <span class="hero__badge">4.8 ★ Google</span>
+        <span class="hero__badge">4.2 ★ Untappd</span>
+        <span class="hero__badge">Iowa's Best Beer 2025</span>
+      </div>
+      <div class="hero__cta">
+        <a href="#on-tap" class="btn btn--gold">Explore Our Beers</a>
+        <a href="#visit" class="btn btn--outline-white">Plan Your Visit</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: hero image -->
+  <div class="hero__image-side" aria-hidden="true">
+    <img
+      src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=900&q=80"
+      alt="Craft beer being poured at Ten Wasp Brewing"
+      loading="eager">
+  </div>
+
+</section>
+
+<!-- ================================================================
+     STATS STRIP
+     ================================================================ -->
+<div class="stats-strip" role="region" aria-label="At a glance">
+  <div class="stats-strip__inner">
+    <div class="stat" data-value="4.8" data-start="4.0" data-decimals="1" data-suffix="★">
+      <span class="stat__number">4.8★</span>
+      <span class="stat__label">Google Rating</span>
+    </div>
+    <div class="stat" data-value="4.2" data-start="3.5" data-decimals="1" data-suffix="★">
+      <span class="stat__number">4.2★</span>
+      <span class="stat__label">Untappd Rating</span>
+    </div>
+    <div class="stat" data-value="78" data-decimals="0" data-suffix="+">
+      <span class="stat__number">78+</span>
+      <span class="stat__label">Beers Crafted</span>
+    </div>
+    <div class="stat" data-value="1639" data-start="1500" data-decimals="0" data-suffix="">
+      <span class="stat__number">1,639</span>
+      <span class="stat__label">Untappd Check-ins</span>
+    </div>
+  </div>
+</div>
+
+<hr class="gold-rule">
+
+<!-- ================================================================
+     OUR STORY
+     ================================================================ -->
+<section id="story" class="story section section--cream" aria-labelledby="story-heading">
+  <div class="container">
+    <div class="story-grid">
+
+      <!-- Text -->
+      <div data-reveal="left">
+        <span class="section-eyebrow">Est. February 2024</span>
+        <h2 class="section-title" id="story-heading">The Story Behind the Sting</h2>
+        <div class="story__body">
+          <p>In spring 2023, Jacob and Diana drove through Sumner, Iowa — and immediately knew this was home. Within weeks, they'd committed to transforming a stunning 1898 Main Street building into something the town had never seen: its very first brewery.</p>
+          <p>Nine months of hands-on renovation followed. They exposed original brick walls, restored the handsome tin ceiling, and repurposed antique bowling alley lanes into the bar counters where you now set your pint. Every detail tells a story.</p>
+          <p>Jacob brings a professional brewing pedigree spanning Mankato Brewery, Urban Growler, Voyageur, and Rhombus Guys. He rarely repeats a recipe — with 78+ beers produced and counting, there's always something new on tap. Two of his creations were named <strong>Iowa's Best Beers of 2025</strong>.</p>
+        </div>
+        <div class="story__founders">
+          <div class="story__founders-icon">🐝</div>
+          <div>
+            <span class="story__founders-name">Jacob &amp; Diana</span>
+            <span class="story__founders-title">Head Brewer &amp; Co-Owner · Sumner's Finest</span>
+          </div>
+        </div>
+        <div class="story__quote" data-reveal style="--delay:200ms">
+          <blockquote>"The place is stunning — well lit, colorful, inviting, and positive vibes surround the place. Diana, Jacob, and staff are incredibly friendly and make you feel at home."</blockquote>
+          <cite>— Iowa Beer Baron, August 2024</cite>
+        </div>
+      </div>
+
+      <!-- Image -->
+      <div data-reveal="right">
+        <div class="story__image-wrap">
+          <img
+            src="https://images.unsplash.com/photo-1566633806327-68e152aaf26d?auto=format&fit=crop&w=800&q=80"
+            alt="The historic interior of Ten Wasp Brewing Company, featuring exposed brick, tin ceiling, and bowling alley bar tops"
+            loading="lazy">
+          <div class="story__image-caption">
+            <span>112 W 1st Street</span>
+            <span>Built 1898 · Reimagined 2024</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="gold-rule">
+
+<!-- ================================================================
+     ON TAP
+     ================================================================ -->
+<section id="on-tap" class="section section--navy" aria-labelledby="ontap-heading">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <span class="section-eyebrow">The Tap Room</span>
+      <h2 class="section-title" id="ontap-heading">What's On Tap</h2>
+      <p class="section-sub">Jacob rarely repeats a recipe. There's always something new to discover.</p>
+    </div>
+
+    <div class="beer-filters" role="group" aria-label="Filter beers by category">
+      <button class="filter-btn active" data-filter="all">All Beers</button>
+      <button class="filter-btn" data-filter="lil-crushers">Lil' Crushers</button>
+      <button class="filter-btn" data-filter="hoppy">Hoppy</button>
+      <button class="filter-btn" data-filter="dark-malty">Dark &amp; Malty</button>
+      <button class="filter-btn" data-filter="sours">Sours &amp; Fruity</button>
+      <button class="filter-btn" data-filter="non-alc">Non-Alc</button>
+    </div>
+
+    <div id="beer-grid" class="beer-grid" role="list" aria-label="Beer menu">
+      <!-- Rendered by JS -->
+    </div>
+  </div>
+</section>
+
+<hr class="gold-rule">
+
+<!-- ================================================================
+     KITCHEN
+     ================================================================ -->
+<section id="kitchen" class="section section--white" aria-labelledby="kitchen-heading">
+  <div class="container">
+    <div data-reveal>
+      <span class="section-eyebrow">Light Bites</span>
+      <h2 class="section-title" id="kitchen-heading">From Our Kitchen</h2>
+      <p class="section-sub">House-made goodness to pair with your pint.</p>
+    </div>
+    <div id="kitchen-grid" class="kitchen-grid">
+      <!-- Rendered by JS -->
+    </div>
+  </div>
+</section>
+
+<hr class="gold-rule">
+
+<!-- ================================================================
+     EVENTS
+     ================================================================ -->
+<section id="events" class="section section--blue" aria-labelledby="events-heading">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <span class="section-eyebrow">Always Something On</span>
+      <h2 class="section-title" id="events-heading">What's Happening</h2>
+    </div>
+
+    <div class="events-grid">
+      <div class="event-card event-card--music" data-reveal data-reveal-delay="0">
+        <div class="event-card__icon" aria-hidden="true">🎵</div>
+        <h3>Live Music</h3>
+        <p>Regular performances from local and regional artists. Check our Facebook for the latest schedule and lineup announcements.</p>
+      </div>
+      <div class="event-card event-card--tours" data-reveal data-reveal-delay="100">
+        <div class="event-card__icon" aria-hidden="true">🍺</div>
+        <h3>Brewery Tours</h3>
+        <p>Monthly ticketed tours where Jacob walks you through the craft. All ticket proceeds benefit a local Sumner organization through the Community Causes program.</p>
+      </div>
+      <div class="event-card event-card--community" data-reveal data-reveal-delay="200">
+        <div class="event-card__icon" aria-hidden="true">🏘️</div>
+        <h3>Community Events</h3>
+        <p>Running club, craft classes, Oktoberfest, Youth Maker Fair, charity fundraisers — Ten Wasp is woven into the fabric of Sumner. Year-round programming for all ages.</p>
+      </div>
+    </div>
+
+    <div class="events__cta" data-reveal>
+      <p>Follow us for the full schedule and upcoming specials</p>
+      <a href="https://facebook.com/tenwaspbrewing" class="btn btn--gold" target="_blank" rel="noopener noreferrer" aria-label="View event schedule on Facebook">
+        View Schedule on Facebook
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     REVIEWS MARQUEE
+     ================================================================ -->
+<section class="reviews section section--white" aria-label="Customer reviews">
+  <div class="section-header" data-reveal>
+    <span class="section-eyebrow">From Our Guests</span>
+    <h2 class="section-title">What People Are Saying</h2>
+  </div>
+
+  <div class="marquee-container" aria-label="Scrolling customer reviews">
+    <div class="marquee-track">
+      <!-- First set -->
+      <div class="review-card">
+        <div class="review-card__stars" aria-label="5 stars">★★★★★</div>
+        <q>I drive an hour from Cedar Rapids just because of the experience. The staff made me feel welcome the first time I went — and every time since.</q>
+        <div class="review-card__meta"><span class="review-card__author">Brian S.</span><span class="review-card__dot"></span><span class="review-card__source">Google Review</span></div>
+      </div>
+      <div class="review-card">
+        <div class="review-card__stars" aria-label="5 stars">★★★★★</div>
+        <q>The place is stunning. Well lit, colorful, inviting. The staff are incredibly friendly and make you feel at home the moment you walk in.</q>
+        <div class="review-card__meta"><span class="review-card__author">Iowa Beer Baron</span><span class="review-card__dot"></span><span class="review-card__source">Featured Review</span></div>
+      </div>
+      <div class="review-card">
+        <div class="review-card__stars" aria-label="5 stars">★★★★★</div>
+        <q>Friendly atmosphere — we were welcomed, great service, food was absolute delish. Highly recommend the bread sticks and pizza. Beer was REALLY good!</q>
+        <div class="review-card__meta"><span class="review-card__author">Grace C.</span><span class="review-card__dot"></span><span class="review-card__source">Google Review</span></div>
+      </div>
+      <div class="review-card">
+        <div class="review-card__stars" aria-label="5 stars">★★★★★</div>
+        <q>Ten Wasp is one of our favorites! Their homemade root beer is definitely worth trying — and the craft beers are exceptional.</q>
+        <div class="review-card__meta"><span class="review-card__author">Waterloo-Cedar Falls Foodies</span><span class="review-card__dot"></span><span class="review-card__source">Facebook</span></div>
+      </div>
+      <div class="review-card">
+        <div class="review-card__stars" aria-label="5 stars">★★★★★</div>
+        <q>Amazing beer! Fabulous color, terrific flavor! Love this little brewery. The nicest people — and the brewer is absolutely top notch!</q>
+        <div class="review-card__meta"><span class="review-card__author">Untappd User</span><span class="review-card__dot"></span><span class="review-card__source">Untappd 4.2★</span></div>
+      </div>
+      <div class="review-card">
+        <div class="review-card__stars" aria-label="5 stars">★★★★★</div>
+        <q>Pizza was delicious — including a great gluten-free option. Nice live music, very clean. So much more than I expected from a small Iowa town.</q>
+        <div class="review-card__meta"><span class="review-card__author">Roadtrippers Review</span><span class="review-card__dot"></span><span class="review-card__source">Roadtrippers.com</span></div>
+      </div>
+      <!-- Duplicated for seamless loop -->
+      <div class="review-card" aria-hidden="true">
+        <div class="review-card__stars">★★★★★</div>
+        <q>I drive an hour from Cedar Rapids just because of the experience. The staff made me feel welcome the first time I went — and every time since.</q>
+        <div class="review-card__meta"><span class="review-card__author">Brian S.</span><span class="review-card__dot"></span><span class="review-card__source">Google Review</span></div>
+      </div>
+      <div class="review-card" aria-hidden="true">
+        <div class="review-card__stars">★★★★★</div>
+        <q>The place is stunning. Well lit, colorful, inviting. The staff are incredibly friendly and make you feel at home the moment you walk in.</q>
+        <div class="review-card__meta"><span class="review-card__author">Iowa Beer Baron</span><span class="review-card__dot"></span><span class="review-card__source">Featured Review</span></div>
+      </div>
+      <div class="review-card" aria-hidden="true">
+        <div class="review-card__stars">★★★★★</div>
+        <q>Friendly atmosphere — we were welcomed, great service, food was absolute delish. Highly recommend the bread sticks and pizza. Beer was REALLY good!</q>
+        <div class="review-card__meta"><span class="review-card__author">Grace C.</span><span class="review-card__dot"></span><span class="review-card__source">Google Review</span></div>
+      </div>
+      <div class="review-card" aria-hidden="true">
+        <div class="review-card__stars">★★★★★</div>
+        <q>Ten Wasp is one of our favorites! Their homemade root beer is definitely worth trying — and the craft beers are exceptional.</q>
+        <div class="review-card__meta"><span class="review-card__author">Waterloo-Cedar Falls Foodies</span><span class="review-card__dot"></span><span class="review-card__source">Facebook</span></div>
+      </div>
+      <div class="review-card" aria-hidden="true">
+        <div class="review-card__stars">★★★★★</div>
+        <q>Amazing beer! Fabulous color, terrific flavor! Love this little brewery. The nicest people — and the brewer is absolutely top notch!</q>
+        <div class="review-card__meta"><span class="review-card__author">Untappd User</span><span class="review-card__dot"></span><span class="review-card__source">Untappd 4.2★</span></div>
+      </div>
+      <div class="review-card" aria-hidden="true">
+        <div class="review-card__stars">★★★★★</div>
+        <q>Pizza was delicious — including a great gluten-free option. Nice live music, very clean. So much more than I expected from a small Iowa town.</q>
+        <div class="review-card__meta"><span class="review-card__author">Roadtrippers Review</span><span class="review-card__dot"></span><span class="review-card__source">Roadtrippers.com</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     COMMUNITY HIVE
+     ================================================================ -->
+<section id="community" class="community section" aria-labelledby="community-heading">
+  <div class="container">
+    <div class="community-layout">
+      <div data-reveal="left">
+        <span class="section-eyebrow">Giving Back</span>
+        <h2 class="section-title" id="community-heading">The Community Hive</h2>
+        <p class="community__lead">Every pint you pour here does more than refresh — it reinvests in Sumner. Through our monthly Brewery Tours and register round-up donations, Ten Wasp is committed to giving $5,000 or more per year to local organizations through the Sumner Community Causes program.</p>
+
+        <div>
+          <p class="goal-label">2024 Annual Giving Goal</p>
+          <div class="goal-bar" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" aria-label="65% toward $5,000 goal">
+            <div class="goal-fill" data-progress="65%"></div>
+          </div>
+          <p class="goal-caption">One featured local cause per month. Every tour ticket counts.</p>
+        </div>
+
+        <p class="community__note">Ten Wasp is also a proud member of the <strong>Iowa Brewers Guild</strong> and part of the <strong>Iowa Beer Passport</strong> program — putting Sumner on the craft beer map statewide.</p>
+      </div>
+
+      <div class="community-stats" data-reveal="right">
+        <div class="community-stat">
+          <div class="community-stat__num">$5K+</div>
+          <div class="community-stat__label">Annual Giving Goal</div>
+        </div>
+        <div class="community-stat">
+          <div class="community-stat__num">12</div>
+          <div class="community-stat__label">Local Causes Supported Per Year</div>
+        </div>
+        <div class="community-stat">
+          <div class="community-stat__num">Iowa</div>
+          <div class="community-stat__label">Beer Passport Program Member</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="gold-rule">
+
+<!-- ================================================================
+     VISIT US
+     ================================================================ -->
+<section id="visit" class="section section--navy" aria-labelledby="visit-heading">
+  <div class="container">
+    <div data-reveal>
+      <span class="section-eyebrow">Find Your Hive</span>
+      <h2 class="section-title" id="visit-heading">Visit Ten Wasp</h2>
+    </div>
+    <div class="visit-grid">
+
+      <!-- Info -->
+      <div>
+        <div class="hours-block" data-reveal>
+          <h3 class="hours-title">Taproom Hours</h3>
+          <table class="hours-table" id="hours-table-wrap">
+            <tbody id="hours-table">
+              <!-- Rendered by JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="contact-block" data-reveal data-reveal-delay="100">
+          <h3>Find Us</h3>
+          <address>
+            <p>112 W 1st Street<br>Sumner, Iowa 50674</p>
+            <a href="tel:+15635789015" class="contact-phone" aria-label="Call Ten Wasp Brewing">(563) 578-9015</a>
+          </address>
+        </div>
+
+        <div class="social-links" data-reveal data-reveal-delay="150">
+          <a href="https://facebook.com/tenwaspbrewing" class="social-link" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.5h-2.8V24C19.62 23.1 24 18.1 24 12.07z"/></svg>
+            Facebook
+          </a>
+          <a href="https://instagram.com/tenwaspbrewing" class="social-link" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            Instagram
+          </a>
+          <a href="https://untappd.com/TenWaspBrewingCompany" class="social-link" target="_blank" rel="noopener" aria-label="Untappd">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 2a10 10 0 110 20A10 10 0 0112 2zm-.5 3v7.27l-4.24 4.24 1.41 1.41L13 14.1V5h-1.5z"/></svg>
+            Untappd
+          </a>
+        </div>
+      </div>
+
+      <!-- Map -->
+      <div data-reveal="right">
+        <div class="map-frame">
+          <iframe
+            src="https://maps.google.com/maps?q=112+W+1st+St+Sumner+IA+50674&output=embed"
+            title="Ten Wasp Brewing Company on Google Maps"
+            loading="lazy"
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade"
+            aria-label="Map showing Ten Wasp Brewing Company location at 112 W 1st St, Sumner, IA"></iframe>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ================================================================
+     FOOTER
+     ================================================================ -->
+<footer class="footer" role="contentinfo">
+  <div class="footer__grid">
+    <div class="footer-brand">
+      <div class="footer-brand__logo">
+        <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M43,16 Q32,7 25,4" stroke="#F0C020" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M57,16 Q68,7 75,4" stroke="#F0C020" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <circle cx="25" cy="4" r="3" fill="#F0C020"/>
+          <circle cx="75" cy="4" r="3" fill="#F0C020"/>
+          <ellipse cx="50" cy="24" rx="16" ry="12" fill="white" opacity="0.9"/>
+          <path d="M38,38 C22,26 8,28 3,36 C0,44 8,52 22,50 C32,48 38,44 38,44" fill="white" opacity="0.6"/>
+          <path d="M62,38 C78,26 92,28 97,36 C100,44 92,52 78,50 C68,48 62,44 62,44" fill="white" opacity="0.6"/>
+          <rect x="35" y="30" width="30" height="28" rx="6" fill="white" opacity="0.9"/>
+          <text x="50" y="47" text-anchor="middle" dominant-baseline="middle" font-family="Georgia,serif" font-weight="bold" font-size="14" fill="#F0C020">10</text>
+          <path d="M42,58 Q35,68 34,82 Q34,96 42,108 Q46,116 50,119 Q54,116 58,108 Q66,96 66,82 Q65,68 58,58 Z" fill="white" opacity="0.9"/>
+        </svg>
+        <div class="footer-brand__logo-text">
+          TEN WASP
+          <small>Brewing Company</small>
+        </div>
+      </div>
+      <p>Sumner's first brewery. Craft beer, house-made sodas, wood-fired community, and warm welcomes at 112 W 1st Street, Sumner, Iowa.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="#story">Our Story</a></li>
+        <li><a href="#on-tap">On Tap</a></li>
+        <li><a href="#kitchen">Kitchen</a></li>
+        <li><a href="#events">Events</a></li>
+        <li><a href="#community">Community</a></li>
+        <li><a href="#visit">Visit Us</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col footer-hours">
+      <h4>Hours</h4>
+      <div id="footer-hours">
+        <!-- Rendered by JS -->
+        <p><strong>Wed – Thu:</strong> 3:00 – 9:00 PM</p>
+        <p><strong>Fri – Sat:</strong> 12:00 – 9:00 PM</p>
+        <p><strong>Sunday:</strong> 12:00 – 8:00 PM</p>
+        <p><strong>Mon – Tue:</strong> Closed</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <span class="footer__copy">© 2024 Ten Wasp Brewing Company · Sumner, Iowa · (563) 578-9015</span>
+    <a href="https://deerflow.tech" target="_blank" rel="noopener" class="deerflow-credit" aria-label="Created by Deerflow">
+      <span aria-hidden="true">⬡</span> Created by Deerflow
+    </a>
+  </div>
+</footer>
+
+<!-- ================================================================
+     ADMIN PANEL
+     ================================================================ -->
+<button id="admin-trigger" class="admin-trigger" title="Admin Panel" aria-label="Open admin panel">🔒</button>
+
+<div id="admin-overlay" class="admin-overlay" hidden role="dialog" aria-modal="true" aria-label="Admin Panel">
+  <div class="admin-panel">
+
+    <!-- Header -->
+    <div class="admin-header">
+      <div>
+        <h2>TEN WASP · ADMIN</h2>
+        <span class="admin-header-sub">Menu &amp; Content Manager</span>
+      </div>
+      <button id="admin-close" class="admin-close" aria-label="Close admin panel">×</button>
+    </div>
+
+    <!-- Login view -->
+    <div class="admin-login" id="admin-login-form-wrap">
+      <div class="admin-login__icon">🔒</div>
+      <p class="admin-login__title">Admin Access</p>
+      <form id="admin-login-form">
+        <input
+          type="password"
+          id="admin-password-input"
+          class="admin-login__input"
+          placeholder="Enter password"
+          autocomplete="current-password"
+          required>
+        <br><br>
+        <button type="submit" class="admin-btn admin-btn--primary" style="width:100%;padding:0.85rem;">Sign In</button>
+        <p class="admin-login__error" id="admin-login-error">Incorrect password. Try again.</p>
+      </form>
+    </div>
+
+    <!-- Tabs -->
+    <div class="admin-tabs" role="tablist">
+      <button class="admin-tab active" data-tab="beers" role="tab" aria-selected="true">Beers</button>
+      <button class="admin-tab" data-tab="food" role="tab" aria-selected="false">Food</button>
+      <button class="admin-tab" data-tab="hours" role="tab" aria-selected="false">Hours</button>
+      <button class="admin-tab" data-tab="announce" role="tab" aria-selected="false">Announcements</button>
+    </div>
+
+    <!-- Content -->
+    <div class="admin-content">
+
+      <!-- BEERS TAB -->
+      <div id="admin-panel-beers" class="admin-tab-panel active" role="tabpanel">
+        <p class="admin-section-title">Beer Menu — click any beer to edit</p>
+        <button class="admin-btn admin-btn--add" id="admin-add-beer">+ Add New Beer</button>
+        <div id="admin-beer-list" class="admin-beer-list">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- FOOD TAB -->
+      <div id="admin-panel-food" class="admin-tab-panel" role="tabpanel">
+        <p class="admin-section-title">Kitchen Menu — click any item to edit</p>
+        <div id="admin-food-list" class="admin-beer-list">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- HOURS TAB -->
+      <div id="admin-panel-hours" class="admin-tab-panel" role="tabpanel">
+        <p class="admin-section-title">Taproom Hours</p>
+        <div id="admin-hours-list" class="admin-hours-grid">
+          <!-- Rendered by JS -->
+        </div>
+        <br>
+        <button class="admin-btn admin-btn--primary" id="admin-save-hours">Save Hours</button>
+      </div>
+
+      <!-- ANNOUNCE TAB -->
+      <div id="admin-panel-announce" class="admin-tab-panel" role="tabpanel">
+        <p class="admin-section-title">Announcement Banner</p>
+        <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:1rem;">Display a banner at the top of the page for specials, closures, or events.</p>
+        <div class="admin-announce-wrap">
+          <div class="admin-form-group" style="margin-bottom:1rem;">
+            <label>Announcement Text</label>
+            <textarea id="admin-announce-text" rows="3" placeholder="e.g. 🍕 Pizza Pop-Up this Friday 4–8 PM · First 20 orders get a free pretzel!"></textarea>
+          </div>
+          <div class="admin-announce-toggle">
+            <input type="checkbox" id="admin-announce-active">
+            <label for="admin-announce-active">Show announcement banner on website</label>
+          </div>
+          <button class="admin-btn admin-btn--primary" id="admin-save-announce">Save Announcement</button>
+        </div>
+      </div>
+
+    </div><!-- /admin-content -->
+  </div><!-- /admin-panel -->
+</div><!-- /admin-overlay -->
+
+<script src="js/main.js"></script>
+</body>
+</html>
