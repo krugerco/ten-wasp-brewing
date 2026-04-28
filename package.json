@@ -2,13 +2,5 @@
   "name": "ten-wasp-brewing",
   "version": "1.0.0",
   "description": "Ten Wasp Brewing Company website — Sumner, Iowa",
-  "private": true,
-  "scripts": {
-    "dev": "python -m http.server 5500",
-    "deploy": "wrangler pages deploy . --project-name ten-wasp-brewing",
-    "deploy:preview": "wrangler pages deploy . --project-name ten-wasp-brewing --branch preview"
-  },
-  "devDependencies": {
-    "wrangler": "^4.0.0"
-  }
+  "private": true
 }
