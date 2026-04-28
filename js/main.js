@@ -1,99 +1,202 @@
 /* =================================================================
    TEN WASP BREWING COMPANY — main.js
-   Admin CMS + Page interactions
+   Cross-device CMS: data.json is the source of truth.
+   Admin saves push to GitHub → Cloudflare auto-redeploys.
    ================================================================= */
 
 /* -----------------------------------------------------------------
-   DATA DEFAULTS
+   GITHUB CONFIG
+   Visitors fetch /data.json from the CDN (fast, edge-served).
+   Admin saves update data.json in the repo via GitHub API.
 ----------------------------------------------------------------- */
-const DEFAULT_BEERS = [
-  { id: 1, name: 'Synthwave Portal', style: 'NEIPA', abv: null, ibu: null, rating: 4.42, price: null, category: 'hoppy', award: null, available: true, desc: 'The highest-rated pour in the hive. Neon-soaked tropical haze. Riwaka, Citra, Nectaron.' },
-  { id: 2, name: "Wendy's a Lifeguard", style: 'NEIPA', abv: null, ibu: null, rating: null, price: null, category: 'hoppy', award: "Iowa's Best Beer 2025", available: true, desc: 'Lush mango, passionfruit, citrus bliss. Simcoe, Vic Secret, Mosaic, Citra.' },
-  { id: 3, name: 'Cake Eater', style: 'Imperial Pastry Stout', abv: 14, ibu: null, rating: null, price: null, category: 'dark-malty', award: "Iowa's Best Beer 2025", available: true, desc: 'Award-winning decadence. Pecans, coconut, cocoa nibs, vanilla beans.' },
-  { id: 4, name: 'Flying V', style: 'Imperial Hazy IPA', abv: 8.2, ibu: null, rating: null, price: null, category: 'hoppy', award: null, available: true, desc: 'Big, bold, unapologetic. Full-throttle hazy for the adventurous.' },
-  { id: 5, name: "Look Ma, We're On Tap", style: 'Double NEIPA', abv: 8.3, ibu: null, rating: 4.35, price: null, category: 'hoppy', award: null, available: true, desc: 'DDH Citra, Riwaka, Vic Secret — tropical citrus piled sky high.' },
-  { id: 6, name: 'Strata in the Whirlpool', style: 'NEIPA', abv: 7.4, ibu: 35, rating: 4.32, price: null, category: 'hoppy', award: null, available: true, desc: 'Strata, Citra, Riwaka. Citrus with a whisper of raspberry.' },
-  { id: 7, name: 'Midlife Crisis', style: 'Red IPA', abv: 7.7, ibu: null, rating: null, price: null, category: 'hoppy', award: null, available: true, desc: 'Bold ruby-red IPA with caramel backbone and assertive hop character.' },
-  { id: 8, name: "Droppin' Hops", style: 'Hazy Pale Ale', abv: 5.2, ibu: null, rating: 4.14, price: null, category: 'hoppy', award: null, available: true, desc: 'Sessionable haze. Citra, Krush, Cashmere, Motueka.' },
-  { id: 9, name: 'Cassville', style: 'Cream Ale', abv: 4.8, ibu: 10, rating: 3.95, price: null, category: 'lil-crushers', award: null, available: true, desc: 'Smooth, clean, crushable. The perfect pint for any occasion.' },
-  { id: 10, name: "Norwegian A'Peel", style: 'Witbier', abv: 5.8, ibu: 14, rating: 3.95, price: null, category: 'lil-crushers', award: null, available: true, desc: 'Belgian-style wit with orange peel, coriander, Norwegian kveik yeast.' },
-  { id: 11, name: "Pub Thumpin'", style: 'Dark Mild', abv: 3.4, ibu: null, rating: null, price: null, category: 'lil-crushers', award: null, available: true, desc: 'Low ABV, big flavor. A proper session ale in the British tradition.' },
-  { id: 12, name: "Peelin' Cute", style: 'Pastry Stout', abv: 12, ibu: null, rating: null, price: null, category: 'dark-malty', award: null, available: true, desc: 'Rich, velvety, dangerously drinkable. A dessert in a glass.' },
-  { id: 13, name: 'Guava the Nut', style: 'Fruited Sour', abv: 5.4, ibu: null, rating: 4.35, price: null, category: 'sours', award: null, available: true, desc: 'Pink guava and coconut. Creamy, floral, and utterly tropical.' },
-  { id: 14, name: 'Berry Boo v2', style: 'Fruited Sour', abv: 5.8, ibu: null, rating: null, price: null, category: 'sours', award: null, available: true, desc: 'Blackberry and raspberry — bright, jammy, intensely berry.' },
-  { id: 15, name: 'Electric Shonk', style: 'Fruited Sour', abv: 4.0, ibu: 3, rating: 3.99, price: null, category: 'sours', award: null, available: true, desc: 'Mango and pineapple — electric tropical sunshine in a glass.' },
-  { id: 16, name: 'Surfer Girl', style: 'Fruited Sour', abv: 4.0, ibu: null, rating: null, price: null, category: 'sours', award: null, available: true, desc: 'Ride the sour wave. Fruit-forward and easy to love.' },
-  { id: 17, name: 'Root 93', style: 'House Root Beer', abv: 0, ibu: null, rating: null, price: null, category: 'non-alc', award: null, available: true, desc: 'Homemade root beer — two varieties brewed in-house. "Definitely worth trying."' },
-  { id: 18, name: 'Orange Cream Soda', style: 'House Soda', abv: 0, ibu: null, rating: null, price: null, category: 'non-alc', award: null, available: true, desc: 'Smooth, creamy, dreamy. Made right here at Ten Wasp.' },
-  { id: 19, name: 'Ginger Ale', style: 'House Soda', abv: 0, ibu: null, rating: null, price: null, category: 'non-alc', award: null, available: true, desc: 'House-made ginger ale with real ginger character.' },
-  { id: 20, name: 'Hop Water', style: 'Hop Water', abv: 0, ibu: null, rating: null, price: null, category: 'non-alc', award: null, available: true, desc: "All the aroma of craft hops, zero alcohol. The designated driver's best friend." },
-];
-
-const DEFAULT_FOOD = [
-  { id: 1, name: 'Homemade Pizza', desc: 'Fresh-made rotating varieties. Gluten-free option available.', badge: 'Fri & Sun Only', badgeType: 'coral', available: true, price: null, img: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=600&q=80' },
-  { id: 2, name: 'Stinger Sticks', desc: 'House-made bread sticks served as cheese bread or dessert bread.', badge: 'Fan Favorite', badgeType: 'gold', available: true, price: null, img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80' },
-  { id: 3, name: 'Bavarian Pretzels', desc: 'Warm, golden, house-made Bavarian pretzels with dipping sauce.', badge: 'Pair with Beer', badgeType: 'blue', available: true, price: null, img: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?auto=format&fit=crop&w=600&q=80' },
-  { id: 4, name: 'Soda Floats', desc: 'House-made sodas topped with premium ice cream. A Ten Wasp signature.', badge: 'All Ages', badgeType: 'blue', available: true, price: null, img: 'https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?auto=format&fit=crop&w=600&q=80' },
-];
-
-const DEFAULT_HOURS = [
-  { day: 'Wednesday', hours: '3:00 – 9:00 PM', open: true },
-  { day: 'Thursday',  hours: '3:00 – 9:00 PM', open: true },
-  { day: 'Friday',    hours: '12:00 – 9:00 PM', open: true },
-  { day: 'Saturday',  hours: '12:00 – 9:00 PM', open: true },
-  { day: 'Sunday',    hours: '12:00 – 8:00 PM', open: true },
-  { day: 'Monday',    hours: 'Closed', open: false },
-  { day: 'Tuesday',   hours: 'Closed', open: false },
-];
-
-const DEFAULT_ANNOUNCEMENT = { text: '', active: false };
+const GH_OWNER  = 'krugerco';
+const GH_REPO   = 'ten-wasp-brewing';
+const GH_BRANCH = 'main';
+const GH_FILE   = 'data.json';
 
 /* -----------------------------------------------------------------
-   STORAGE
+   FALLBACK DEFAULTS  (used only if data.json can't be fetched)
 ----------------------------------------------------------------- */
-const STORAGE_KEY = 'tenwasp_data';
+const DEFAULT_BEERS = [
+  { id: 1,  name: 'Synthwave Portal',       style: 'NEIPA',                abv: null, ibu: null, rating: 4.42, price: null, category: 'hoppy',        award: null,                   available: true,  desc: 'The highest-rated pour in the hive. Neon-soaked tropical haze. Riwaka, Citra, Nectaron.' },
+  { id: 2,  name: "Wendy's a Lifeguard",    style: 'NEIPA',                abv: null, ibu: null, rating: null, price: null, category: 'hoppy',        award: "Iowa's Best Beer 2025", available: true,  desc: 'Lush mango, passionfruit, citrus bliss. Simcoe, Vic Secret, Mosaic, Citra.' },
+  { id: 3,  name: 'Cake Eater',             style: 'Imperial Pastry Stout',abv: 14,   ibu: null, rating: null, price: null, category: 'dark-malty',   award: "Iowa's Best Beer 2025", available: true,  desc: 'Award-winning decadence. Pecans, coconut, cocoa nibs, vanilla beans.' },
+  { id: 4,  name: 'Flying V',               style: 'Imperial Hazy IPA',   abv: 8.2,  ibu: null, rating: null, price: null, category: 'hoppy',        award: null,                   available: true,  desc: 'Big, bold, unapologetic. Full-throttle hazy for the adventurous.' },
+  { id: 5,  name: "Look Ma, We're On Tap",  style: 'Double NEIPA',         abv: 8.3,  ibu: null, rating: 4.35, price: null, category: 'hoppy',        award: null,                   available: true,  desc: 'DDH Citra, Riwaka, Vic Secret — tropical citrus piled sky high.' },
+  { id: 6,  name: 'Strata in the Whirlpool',style: 'NEIPA',               abv: 7.4,  ibu: 35,   rating: 4.32, price: null, category: 'hoppy',        award: null,                   available: true,  desc: 'Strata, Citra, Riwaka. Citrus with a whisper of raspberry.' },
+  { id: 7,  name: 'Midlife Crisis',         style: 'Red IPA',              abv: 7.7,  ibu: null, rating: null, price: null, category: 'hoppy',        award: null,                   available: true,  desc: 'Bold ruby-red IPA with caramel backbone and assertive hop character.' },
+  { id: 8,  name: "Droppin' Hops",          style: 'Hazy Pale Ale',        abv: 5.2,  ibu: null, rating: 4.14, price: null, category: 'hoppy',        award: null,                   available: true,  desc: 'Sessionable haze. Citra, Krush, Cashmere, Motueka.' },
+  { id: 9,  name: 'Cassville',              style: 'Cream Ale',            abv: 4.8,  ibu: 10,   rating: 3.95, price: null, category: 'lil-crushers', award: null,                   available: true,  desc: 'Smooth, clean, crushable. The perfect pint for any occasion.' },
+  { id: 10, name: "Norwegian A'Peel",       style: 'Witbier',              abv: 5.8,  ibu: 14,   rating: 3.95, price: null, category: 'lil-crushers', award: null,                   available: true,  desc: 'Belgian-style wit with orange peel, coriander, Norwegian kveik yeast.' },
+  { id: 11, name: "Pub Thumpin'",           style: 'Dark Mild',            abv: 3.4,  ibu: null, rating: null, price: null, category: 'lil-crushers', award: null,                   available: true,  desc: 'Low ABV, big flavor. A proper session ale in the British tradition.' },
+  { id: 12, name: "Peelin' Cute",           style: 'Pastry Stout',         abv: 12,   ibu: null, rating: null, price: null, category: 'dark-malty',   award: null,                   available: true,  desc: 'Rich, velvety, dangerously drinkable. A dessert in a glass.' },
+  { id: 13, name: 'Guava the Nut',          style: 'Fruited Sour',         abv: 5.4,  ibu: null, rating: 4.35, price: null, category: 'sours',        award: null,                   available: true,  desc: 'Pink guava and coconut. Creamy, floral, and utterly tropical.' },
+  { id: 14, name: 'Berry Boo v2',           style: 'Fruited Sour',         abv: 5.8,  ibu: null, rating: null, price: null, category: 'sours',        award: null,                   available: true,  desc: 'Blackberry and raspberry — bright, jammy, intensely berry.' },
+  { id: 15, name: 'Electric Shonk',         style: 'Fruited Sour',         abv: 4.0,  ibu: 3,    rating: 3.99, price: null, category: 'sours',        award: null,                   available: true,  desc: 'Mango and pineapple — electric tropical sunshine in a glass.' },
+  { id: 16, name: 'Surfer Girl',            style: 'Fruited Sour',         abv: 4.0,  ibu: null, rating: null, price: null, category: 'sours',        award: null,                   available: true,  desc: 'Ride the sour wave. Fruit-forward and easy to love.' },
+  { id: 17, name: 'Root 93',               style: 'House Root Beer',       abv: 0,    ibu: null, rating: null, price: null, category: 'non-alc',      award: null,                   available: true,  desc: 'Homemade root beer — two varieties brewed in-house. "Definitely worth trying."' },
+  { id: 18, name: 'Orange Cream Soda',      style: 'House Soda',           abv: 0,    ibu: null, rating: null, price: null, category: 'non-alc',      award: null,                   available: true,  desc: 'Smooth, creamy, dreamy. Made right here at Ten Wasp.' },
+  { id: 19, name: 'Ginger Ale',             style: 'House Soda',           abv: 0,    ibu: null, rating: null, price: null, category: 'non-alc',      award: null,                   available: true,  desc: 'House-made ginger ale with real ginger character.' },
+  { id: 20, name: 'Hop Water',              style: 'Hop Water',            abv: 0,    ibu: null, rating: null, price: null, category: 'non-alc',      award: null,                   available: true,  desc: "All the aroma of craft hops, zero alcohol. The designated driver's best friend." },
+];
+const DEFAULT_FOOD = [
+  { id: 1, name: 'Homemade Pizza',    desc: 'Fresh-made rotating varieties. Gluten-free option available.',            badge: 'Fri & Sun Only', badgeType: 'coral', available: true, price: null, img: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=600&q=80' },
+  { id: 2, name: 'Stinger Sticks',   desc: 'House-made bread sticks served as cheese bread or dessert bread.',         badge: 'Fan Favorite',   badgeType: 'gold',  available: true, price: null, img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80' },
+  { id: 3, name: 'Bavarian Pretzels',desc: 'Warm, golden, house-made Bavarian pretzels with dipping sauce.',           badge: 'Pair with Beer',  badgeType: 'blue',  available: true, price: null, img: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?auto=format&fit=crop&w=600&q=80' },
+  { id: 4, name: 'Soda Floats',      desc: 'House-made sodas topped with premium ice cream. A Ten Wasp signature.',   badge: 'All Ages',       badgeType: 'blue',  available: true, price: null, img: 'https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?auto=format&fit=crop&w=600&q=80' },
+];
+const DEFAULT_HOURS = [
+  { day: 'Wednesday', hours: '3:00 – 9:00 PM',  open: true  },
+  { day: 'Thursday',  hours: '3:00 – 9:00 PM',  open: true  },
+  { day: 'Friday',    hours: '12:00 – 9:00 PM', open: true  },
+  { day: 'Saturday',  hours: '12:00 – 9:00 PM', open: true  },
+  { day: 'Sunday',    hours: '12:00 – 8:00 PM', open: true  },
+  { day: 'Monday',    hours: 'Closed',           open: false },
+  { day: 'Tuesday',   hours: 'Closed',           open: false },
+];
+const DEFAULT_ANNOUNCEMENT = { text: '', active: false };
 
-function loadData() {
+const ADMIN_PASSWORD = 'wasp2024';
+const CACHE_KEY      = 'tenwasp_cache';      // localStorage cache of remote data
+const GH_TOKEN_KEY   = 'tenwasp_gh_token';   // localStorage GitHub PAT (admin device only)
+
+/* -----------------------------------------------------------------
+   DATA LAYER
+----------------------------------------------------------------- */
+
+/** Synchronously returns cached data or defaults (never null). */
+function getCachedData() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
-    return JSON.parse(raw);
-  } catch { return null; }
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (raw) {
+      const d = JSON.parse(raw);
+      return {
+        beers:        d.beers        ?? DEFAULT_BEERS,
+        food:         d.food         ?? DEFAULT_FOOD,
+        hours:        d.hours        ?? DEFAULT_HOURS,
+        announcement: d.announcement ?? DEFAULT_ANNOUNCEMENT,
+      };
+    }
+  } catch {}
+  return { beers: DEFAULT_BEERS, food: DEFAULT_FOOD, hours: DEFAULT_HOURS, announcement: DEFAULT_ANNOUNCEMENT };
 }
 
-function saveData(data) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+/** Saves data to localStorage cache. */
+function setCachedData(data) {
+  try { localStorage.setItem(CACHE_KEY, JSON.stringify(data)); } catch {}
 }
 
-function getData() {
-  const saved = loadData();
-  return {
-    beers:        saved?.beers        ?? DEFAULT_BEERS,
-    food:         saved?.food         ?? DEFAULT_FOOD,
-    hours:        saved?.hours        ?? DEFAULT_HOURS,
-    announcement: saved?.announcement ?? DEFAULT_ANNOUNCEMENT,
-  };
+/**
+ * Fetches data.json from the CDN (same origin).
+ * On Cloudflare Pages this is served from the edge — fast & cross-device.
+ * Falls back to localhost path for dev mode.
+ */
+async function fetchRemoteData() {
+  try {
+    const url = './data.json?t=' + Date.now();
+    const res = await fetch(url, { cache: 'no-cache' });
+    if (res.ok) return await res.json();
+  } catch {}
+  return null;
+}
+
+/**
+ * Pushes updated data.json to GitHub via the Contents API.
+ * Cloudflare Pages detects the commit and redeploys (~30s).
+ * Requires a GitHub Personal Access Token stored in admin's localStorage.
+ */
+async function pushToGitHub(data) {
+  const token = localStorage.getItem(GH_TOKEN_KEY);
+  if (!token) {
+    return { ok: false, msg: 'No GitHub token set. Go to Admin → ⚙ Sync and add your token.' };
+  }
+
+  try {
+    const apiBase = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
+    const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github+json' };
+
+    // Get current file SHA (required for update)
+    const metaRes = await fetch(apiBase, { headers });
+    if (!metaRes.ok) {
+      const e = await metaRes.json().catch(() => ({}));
+      return { ok: false, msg: `GitHub error: ${e.message || metaRes.status}. Check your token has Contents: Write permission.` };
+    }
+    const { sha } = await metaRes.json();
+
+    // Base64-encode the JSON content
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+
+    // Commit the update
+    const putRes = await fetch(apiBase, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({
+        message: `Update site content — ${new Date().toLocaleString()}`,
+        content,
+        sha,
+        branch: GH_BRANCH,
+      }),
+    });
+
+    if (putRes.ok) {
+      return { ok: true, msg: '✓ Saved to GitHub! Site updates for all visitors in ~30 seconds.' };
+    }
+    const err = await putRes.json().catch(() => ({}));
+    return { ok: false, msg: `Save failed: ${err.message || putRes.status}` };
+
+  } catch (e) {
+    return { ok: false, msg: `Network error: ${e.message}` };
+  }
 }
 
 /* -----------------------------------------------------------------
    PAGE INIT
 ----------------------------------------------------------------- */
-document.addEventListener('DOMContentLoaded', () => {
-  const appData = getData();
+document.addEventListener('DOMContentLoaded', async () => {
+
+  // ── Step 1: Render immediately from cache so page feels instant ──
+  let appData = getCachedData();
+  renderAll(appData);
 
   initNav();
   initCanvas();
   initStats();
-  renderBeers(appData.beers, 'all');
-  renderFood(appData.food);
-  renderHours(appData.hours);
-  renderAnnouncement(appData.announcement);
-  initBeerFilters(appData.beers);
   initScrollReveal();
   initCommunityGoal();
+
+  // ── Step 2: Fetch fresh data from CDN in background ──
+  const fresh = await fetchRemoteData();
+  if (fresh) {
+    setCachedData(fresh);
+    // Re-render only if data actually changed
+    if (JSON.stringify(fresh) !== JSON.stringify(appData)) {
+      appData = fresh;
+      renderAll(appData);
+    }
+  }
+
+  // ── Step 3: Boot admin panel with current data ──
   initAdmin(appData);
-  highlightToday(appData.hours);
+
+  // ── Step 4: Open admin if URL hash is #admin ──
+  if (window.location.hash === '#admin') {
+    document.getElementById('admin-overlay')?.removeAttribute('hidden');
+  }
+  window.addEventListener('hashchange', () => {
+    if (window.location.hash === '#admin') {
+      document.getElementById('admin-overlay')?.removeAttribute('hidden');
+    }
+  });
 });
+
+/** Re-renders all dynamic page sections. */
+function renderAll(data) {
+  renderBeers(data.beers, document.querySelector('.filter-btn.active')?.dataset.filter || 'all');
+  renderFood(data.food);
+  renderHours(data.hours);
+  renderAnnouncement(data.announcement);
+  highlightToday(data.hours);
+}
 
 /* -----------------------------------------------------------------
    NAV
@@ -121,23 +224,17 @@ function initNav() {
   }
 
   // Active link tracking
-  const sections  = document.querySelectorAll('section[id]');
-  const navAs     = document.querySelectorAll('.nav__links a[href^="#"]');
-  new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting)
-        navAs.forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${e.target.id}`));
-    });
-  }, { threshold: 0.3, rootMargin: '-80px 0px -40% 0px' }).observe
-    ? sections.forEach(s =>
-        new IntersectionObserver(entries => {
-          entries.forEach(e => {
-            if (e.isIntersecting)
-              navAs.forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${s.id}`));
-          });
-        }, { threshold: 0.3, rootMargin: '-80px 0px -40% 0px' }).observe(s)
-      )
-    : null;
+  const sections = document.querySelectorAll('section[id]');
+  sections.forEach(s =>
+    new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting)
+          document.querySelectorAll('.nav__links a[href^="#"]').forEach(a =>
+            a.classList.toggle('active', a.getAttribute('href') === `#${s.id}`)
+          );
+      });
+    }, { threshold: 0.3, rootMargin: '-80px 0px -40% 0px' }).observe(s)
+  );
 }
 
 /* -----------------------------------------------------------------
@@ -149,16 +246,18 @@ function initCanvas() {
       window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const ctx = canvas.getContext('2d');
-  let W = canvas.width  = window.innerWidth / 2;
+  let W = canvas.width  = window.innerWidth;
   let H = canvas.height = window.innerHeight;
 
-  const pts = Array.from({ length: 22 }, () => ({
+  const pts = Array.from({ length: 25 }, () => ({
     x: Math.random() * W, y: Math.random() * H,
-    r: 5 + Math.random() * 10, spd: 0.2 + Math.random() * 0.35,
-    drift: (Math.random() - 0.5) * 0.2,
-    a: 0.04 + Math.random() * 0.08,
-    rot: Math.random() * Math.PI * 2, rotS: (Math.random() - 0.5) * 0.015,
-    fill: Math.random() > 0.45,
+    r: 4 + Math.random() * 10,
+    spd: 0.18 + Math.random() * 0.3,
+    drift: (Math.random() - 0.5) * 0.18,
+    a: 0.04 + Math.random() * 0.07,
+    rot: Math.random() * Math.PI * 2,
+    rotS: (Math.random() - 0.5) * 0.012,
+    fill: Math.random() > 0.5,
   }));
 
   function hex(x, y, r) {
@@ -171,25 +270,27 @@ function initCanvas() {
     ctx.closePath();
   }
 
-  function tick() {
+  (function tick() {
     ctx.clearRect(0, 0, W, H);
     pts.forEach(p => {
       p.y -= p.spd; p.x += p.drift; p.rot += p.rotS;
       if (p.y < -40) { p.y = H + 10; p.x = Math.random() * W; }
       if (p.x < -40) p.x = W + 10;
       if (p.x > W + 40) p.x = -10;
-
       ctx.save();
       ctx.translate(p.x, p.y); ctx.rotate(p.rot);
       hex(0, 0, p.r);
       ctx.strokeStyle = `rgba(240,192,32,${p.a})`; ctx.lineWidth = 1; ctx.stroke();
-      if (p.fill) { hex(0, 0, p.r); ctx.fillStyle = `rgba(240,192,32,${p.a * 0.25})`; ctx.fill(); }
+      if (p.fill) { hex(0, 0, p.r); ctx.fillStyle = `rgba(240,192,32,${p.a * 0.22})`; ctx.fill(); }
       ctx.restore();
     });
     requestAnimationFrame(tick);
-  }
-  tick();
-  window.addEventListener('resize', () => { W = canvas.width = window.innerWidth / 2; H = canvas.height = window.innerHeight; }, { passive: true });
+  })();
+
+  window.addEventListener('resize', () => {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }, { passive: true });
 }
 
 /* -----------------------------------------------------------------
@@ -207,13 +308,12 @@ function initStats() {
       const numEl    = el.querySelector('.stat__number');
       const t0 = performance.now();
       const dur = 2000;
-      function frame(now) {
+      (function frame(now) {
         const p = Math.min((now - t0) / dur, 1);
         const e = 1 - Math.pow(1 - p, 3);
         numEl.textContent = (start + (target - start) * e).toFixed(decimals) + suffix;
         if (p < 1) requestAnimationFrame(frame);
-      }
-      requestAnimationFrame(frame);
+      })(performance.now());
       obs.unobserve(el);
     });
   }, { threshold: 0.6 });
@@ -228,20 +328,17 @@ function buildBeerCard(beer, delay) {
   card.className = 'beer-card' + (beer.available === false ? ' beer-card--unavailable' : '');
   card.dataset.category = beer.category;
   card.style.animationDelay = `${delay}ms`;
-
-  let awardHtml = beer.award ? `<div class="beer-card__award">★ ${beer.award}</div>` : '';
+  card.setAttribute('role', 'listitem');
 
   let stats = '';
-  if (beer.abv !== null && beer.abv !== undefined) {
+  if (beer.abv !== null && beer.abv !== undefined)
     stats += `<span><strong>${beer.abv === 0 ? 'Non-Alc' : `${beer.abv}% ABV`}</strong></span>`;
-  }
-  if (beer.ibu) stats += `<span>${beer.ibu} IBU</span>`;
+  if (beer.ibu)    stats += `<span>${beer.ibu} IBU</span>`;
   if (beer.rating) stats += `<span>★ <strong>${beer.rating}</strong> Untappd</span>`;
-  if (beer.price) stats += `<span class="beer-price"><strong>$${beer.price}</strong></span>`;
+  if (beer.price)  stats += `<span class="beer-price"><strong>$${beer.price}</strong></span>`;
 
   card.innerHTML = `
-    <div class="beer-card__accent"></div>
-    ${awardHtml}
+    ${beer.award ? `<div class="beer-card__award">★ ${beer.award}</div>` : ''}
     <div class="beer-card__body">
       <h3 class="beer-card__name">${beer.name}</h3>
       <p class="beer-card__style">${beer.style}</p>
@@ -287,8 +384,8 @@ function renderFood(food) {
         <h3>${item.name}</h3>
         <p>${item.desc}</p>
         <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;">
-          ${item.badge ? `<span class="kitchen-item__badge badge--${item.badgeType || 'blue'}">${item.badge}</span>` : ''}
-          ${item.price ? `<span class="kitchen-item__badge badge--gold">$${item.price}</span>` : ''}
+          ${item.badge  ? `<span class="kitchen-item__badge badge--${item.badgeType || 'blue'}">${item.badge}</span>` : ''}
+          ${item.price  ? `<span class="kitchen-item__badge badge--gold">$${item.price}</span>` : ''}
         </div>
       </div>`;
     grid.appendChild(el);
@@ -300,16 +397,16 @@ function renderFood(food) {
 ----------------------------------------------------------------- */
 function renderHours(hours) {
   const table = document.getElementById('hours-table');
-  if (!table) return;
-  table.innerHTML = '';
-  hours.forEach(h => {
-    const tr = document.createElement('tr');
-    tr.dataset.day = h.day;
-    if (!h.open) tr.classList.add('closed');
-    tr.innerHTML = `<td>${h.day}</td><td>${h.hours}</td>`;
-    table.appendChild(tr);
-  });
-  // Footer hours
+  if (table) {
+    table.innerHTML = '';
+    hours.forEach(h => {
+      const tr = document.createElement('tr');
+      tr.dataset.day = h.day;
+      if (!h.open) tr.classList.add('closed');
+      tr.innerHTML = `<td>${h.day}</td><td>${h.hours}</td>`;
+      table.appendChild(tr);
+    });
+  }
   const footerHours = document.getElementById('footer-hours');
   if (footerHours) {
     footerHours.innerHTML = hours.map(h =>
@@ -321,8 +418,7 @@ function renderHours(hours) {
 function highlightToday(hours) {
   const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const today = days[new Date().getDay()];
-  const row = document.querySelector(`tr[data-day="${today}"]`);
-  if (row) row.classList.add('today');
+  document.querySelector(`tr[data-day="${today}"]`)?.classList.add('today');
 }
 
 /* -----------------------------------------------------------------
@@ -332,8 +428,8 @@ function renderAnnouncement(ann) {
   const bar = document.getElementById('announcement-bar');
   if (!bar) return;
   if (ann.active && ann.text) {
+    // Build bar safely
     bar.textContent = ann.text;
-    // Re-add close button
     const btn = document.createElement('button');
     btn.className = 'announcement-bar__close';
     btn.innerHTML = '×';
@@ -341,7 +437,6 @@ function renderAnnouncement(ann) {
     btn.addEventListener('click', () => bar.classList.add('hidden'));
     bar.appendChild(btn);
     bar.classList.remove('hidden');
-    document.documentElement.style.setProperty('--nav-offset', '0px');
   } else {
     bar.classList.add('hidden');
   }
@@ -370,7 +465,7 @@ function initCommunityGoal() {
   if (!fill) return;
   new IntersectionObserver(entries => {
     entries.forEach(e => {
-      if (e.isIntersecting) { fill.style.width = fill.dataset.progress || '65%'; }
+      if (e.isIntersecting) fill.style.width = fill.dataset.progress || '65%';
     });
   }, { threshold: 0.5 }).observe(fill);
 }
@@ -378,30 +473,32 @@ function initCommunityGoal() {
 /* =================================================================
    ADMIN PANEL
    ================================================================= */
-const ADMIN_PASSWORD = 'wasp2024';
-
 function initAdmin(appData) {
-  const trigger = document.getElementById('admin-trigger');
   const overlay = document.getElementById('admin-overlay');
-  if (!trigger || !overlay) return;
+  if (!overlay) return;
 
-  let data = { ...appData };  // working copy
+  let data = JSON.parse(JSON.stringify(appData)); // deep clone
   let authenticated = false;
 
-  // Open/close
-  trigger.addEventListener('click', () => {
-    overlay.removeAttribute('hidden');
-    if (!authenticated) showLoginView();
-    else showAdminView();
-  });
-  overlay.addEventListener('click', e => {
-    if (e.target === overlay) closeAdmin();
-  });
+  /* ── Open/close ── */
+  // Footer staff link
+  document.querySelectorAll('[data-admin-open]').forEach(el =>
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      overlay.removeAttribute('hidden');
+      authenticated ? showAdminView() : showLoginView();
+    })
+  );
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeAdmin(); });
   document.getElementById('admin-close')?.addEventListener('click', closeAdmin);
 
-  function closeAdmin() { overlay.setAttribute('hidden', ''); }
+  function closeAdmin() {
+    overlay.setAttribute('hidden', '');
+    // Clear #admin from URL without page reload
+    history.replaceState(null, '', window.location.pathname);
+  }
 
-  // ----- Login -----
+  /* ── Views ── */
   function showLoginView() {
     const panel = document.querySelector('.admin-panel');
     panel.classList.add('admin-panel--login');
@@ -419,10 +516,11 @@ function initAdmin(appData) {
     renderAdminFood();
     renderAdminHours();
     renderAdminAnnouncement();
+    renderAdminSettings();
   }
 
-  const loginForm = document.getElementById('admin-login-form');
-  loginForm?.addEventListener('submit', e => {
+  /* ── Login ── */
+  document.getElementById('admin-login-form')?.addEventListener('submit', e => {
     e.preventDefault();
     const pw = document.getElementById('admin-password-input').value;
     const err = document.querySelector('.admin-login__error');
@@ -436,17 +534,36 @@ function initAdmin(appData) {
     }
   });
 
-  // ----- Tabs -----
+  /* ── Tabs ── */
   document.querySelectorAll('.admin-tab').forEach(tab => {
     tab.addEventListener('click', () => {
-      document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.admin-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
       document.querySelectorAll('.admin-tab-panel').forEach(p => p.classList.remove('active'));
       tab.classList.add('active');
+      tab.setAttribute('aria-selected','true');
       document.getElementById(`admin-panel-${tab.dataset.tab}`)?.classList.add('active');
     });
   });
 
-  /* -- BEERS -- */
+  /* ---------------------------------------------------------------
+     HELPER: save data to GitHub + update local cache
+  --------------------------------------------------------------- */
+  async function save(msg) {
+    showToast('Saving…', 'info');
+    setCachedData(data);
+    const result = await pushToGitHub(data);
+    if (result.ok) {
+      renderAll(data); // update visible page immediately
+      initBeerFilters(data.beers);
+      showToast(result.msg, 'success');
+    } else {
+      showToast(result.msg, 'error');
+    }
+  }
+
+  /* ---------------------------------------------------------------
+     BEERS TAB
+  --------------------------------------------------------------- */
   function renderAdminBeers() {
     const list = document.getElementById('admin-beer-list');
     if (!list) return;
@@ -469,45 +586,41 @@ function initAdmin(appData) {
         </div>`;
       list.appendChild(row);
 
-      // Toggle
       row.querySelector('.admin-beer-row').addEventListener('click', () => {
         const form = row.querySelector('.admin-beer-edit-form');
         const isOpen = form.classList.contains('open');
         list.querySelectorAll('.admin-beer-edit-form.open, .admin-beer-row.open')
             .forEach(el => el.classList.remove('open'));
-        if (!isOpen) { form.classList.add('open'); row.querySelector('.admin-beer-row').classList.add('open'); }
+        if (!isOpen) {
+          form.classList.add('open');
+          row.querySelector('.admin-beer-row').classList.add('open');
+        }
       });
 
-      // Save
-      row.querySelector('form').addEventListener('submit', e => {
+      row.querySelector('form').addEventListener('submit', async e => {
         e.preventDefault();
         const fd = new FormData(e.target);
-        const idx2 = parseInt(e.target.dataset.beerIdx, 10);
-        data.beers[idx2] = {
-          ...data.beers[idx2],
+        const i  = parseInt(e.target.dataset.beerIdx, 10);
+        data.beers[i] = {
+          ...data.beers[i],
           name:      fd.get('name'),
           style:     fd.get('style'),
-          abv:       fd.get('abv') !== '' ? parseFloat(fd.get('abv')) : null,
+          abv:       fd.get('abv')   !== '' ? parseFloat(fd.get('abv'))   : null,
           price:     fd.get('price') !== '' ? parseFloat(fd.get('price')) : null,
           desc:      fd.get('desc'),
           available: fd.has('available'),
         };
-        saveData(data);
-        renderBeers(data.beers, document.querySelector('.filter-btn.active')?.dataset.filter || 'all');
+        await save();
         row.querySelector('.admin-beer-edit-form').classList.remove('open');
         row.querySelector('.admin-beer-row').classList.remove('open');
         renderAdminBeers();
-        showToast('Beer updated!');
       });
 
-      // Delete
-      row.querySelector('.admin-btn--danger')?.addEventListener('click', () => {
+      row.querySelector('.admin-btn--danger')?.addEventListener('click', async () => {
         if (confirm(`Remove "${beer.name}" from the menu?`)) {
           data.beers.splice(idx, 1);
-          saveData(data);
-          renderBeers(data.beers, document.querySelector('.filter-btn.active')?.dataset.filter || 'all');
+          await save();
           renderAdminBeers();
-          showToast('Beer removed.');
         }
       });
     });
@@ -551,24 +664,20 @@ function initAdmin(appData) {
       </form>`;
   }
 
-  // Add beer
-  document.getElementById('admin-add-beer')?.addEventListener('click', () => {
-    const newBeer = {
-      id: Date.now(), name: 'New Beer', style: '', abv: null, ibu: null,
-      rating: null, price: null, category: 'hoppy', award: null,
-      available: true, desc: '',
-    };
+  document.getElementById('admin-add-beer')?.addEventListener('click', async () => {
+    const newBeer = { id: Date.now(), name: 'New Beer', style: '', abv: null, ibu: null,
+      rating: null, price: null, category: 'hoppy', award: null, available: true, desc: '' };
     data.beers.push(newBeer);
-    saveData(data);
+    await save();
     renderAdminBeers();
-    renderBeers(data.beers, 'all');
-    // Scroll to last row and open it
     const rows = document.querySelectorAll('.admin-beer-row');
     rows[rows.length - 1]?.click();
     rows[rows.length - 1]?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   });
 
-  /* -- FOOD -- */
+  /* ---------------------------------------------------------------
+     FOOD TAB
+  --------------------------------------------------------------- */
   function renderAdminFood() {
     const list = document.getElementById('admin-food-list');
     if (!list) return;
@@ -610,22 +719,25 @@ function initAdmin(appData) {
         list.querySelectorAll('.admin-beer-edit-form.open,.admin-beer-row.open').forEach(el => el.classList.remove('open'));
         if (!open) { form.classList.add('open'); row.querySelector('.admin-beer-row').classList.add('open'); }
       });
-      row.querySelector('form').addEventListener('submit', e => {
+      row.querySelector('form').addEventListener('submit', async e => {
         e.preventDefault();
-        const fd = new FormData(e.target);
+        const fd   = new FormData(e.target);
         const idx2 = parseInt(e.target.dataset.foodIdx, 10);
-        data.food[idx2] = { ...data.food[idx2], name: fd.get('name'), price: fd.get('price') || null, desc: fd.get('desc'), badge: fd.get('badge'), img: fd.get('img'), available: fd.has('available') };
-        saveData(data);
-        renderFood(data.food);
+        data.food[idx2] = { ...data.food[idx2],
+          name: fd.get('name'), price: fd.get('price') || null,
+          desc: fd.get('desc'), badge: fd.get('badge'),
+          img: fd.get('img'), available: fd.has('available') };
+        await save();
         row.querySelector('.admin-beer-edit-form').classList.remove('open');
         row.querySelector('.admin-beer-row').classList.remove('open');
         renderAdminFood();
-        showToast('Food item updated!');
       });
     });
   }
 
-  /* -- HOURS -- */
+  /* ---------------------------------------------------------------
+     HOURS TAB
+  --------------------------------------------------------------- */
   function renderAdminHours() {
     const container = document.getElementById('admin-hours-list');
     if (!container) return;
@@ -642,68 +754,100 @@ function initAdmin(appData) {
         </div>`;
       container.appendChild(row);
     });
-    document.getElementById('admin-save-hours')?.addEventListener('click', () => {
+
+    // Replace save button listener each render
+    const saveBtn = document.getElementById('admin-save-hours');
+    const newBtn  = saveBtn.cloneNode(true);
+    saveBtn.parentNode.replaceChild(newBtn, saveBtn);
+    newBtn.addEventListener('click', async () => {
       container.querySelectorAll('.admin-hours-input').forEach(input => {
-        const i = parseInt(input.dataset.idx, 10);
-        data.hours[i].hours = input.value;
+        data.hours[parseInt(input.dataset.idx, 10)].hours = input.value;
       });
       container.querySelectorAll('.admin-hours-open').forEach(cb => {
-        const i = parseInt(cb.dataset.idx, 10);
-        data.hours[i].open = cb.checked;
+        data.hours[parseInt(cb.dataset.idx, 10)].open = cb.checked;
       });
-      saveData(data);
-      renderHours(data.hours);
-      highlightToday(data.hours);
-      showToast('Hours saved!');
-    }, { once: true });
-    // Re-attach after re-render (simple approach: just call again)
+      await save();
+    });
   }
 
-  /* -- ANNOUNCEMENT -- */
+  /* ---------------------------------------------------------------
+     ANNOUNCEMENT TAB
+  --------------------------------------------------------------- */
   function renderAdminAnnouncement() {
     const textarea = document.getElementById('admin-announce-text');
     const checkbox = document.getElementById('admin-announce-active');
     if (textarea) textarea.value = data.announcement.text || '';
     if (checkbox) checkbox.checked = data.announcement.active;
-    document.getElementById('admin-save-announce')?.addEventListener('click', () => {
+
+    const saveBtn = document.getElementById('admin-save-announce');
+    const newBtn  = saveBtn.cloneNode(true);
+    saveBtn.parentNode.replaceChild(newBtn, saveBtn);
+    newBtn.addEventListener('click', async () => {
       data.announcement = { text: textarea.value, active: checkbox.checked };
-      saveData(data);
-      renderAnnouncement(data.announcement);
-      showToast('Announcement saved!');
-    }, { once: true });
+      await save();
+    });
   }
 
-  // Re-bind hours + announce save buttons after each open
-  document.getElementById('admin-trigger').addEventListener('click', () => {
-    if (authenticated) {
-      setTimeout(() => {
-        renderAdminHours();
-        renderAdminAnnouncement();
-      }, 50);
-    }
-  });
+  /* ---------------------------------------------------------------
+     SYNC / SETTINGS TAB
+  --------------------------------------------------------------- */
+  function renderAdminSettings() {
+    const input   = document.getElementById('admin-gh-token-input');
+    const saveBtn = document.getElementById('admin-save-token');
+    const testBtn = document.getElementById('admin-test-sync');
+    if (!input) return;
+
+    // Pre-fill with stored token (masked)
+    const stored = localStorage.getItem(GH_TOKEN_KEY) || '';
+    input.value  = stored ? stored : '';
+
+    const saveH = saveBtn.cloneNode(true);
+    saveBtn.parentNode.replaceChild(saveH, saveBtn);
+    saveH.addEventListener('click', () => {
+      const val = input.value.trim();
+      if (val) {
+        localStorage.setItem(GH_TOKEN_KEY, val);
+        showToast('Token saved on this device.', 'success');
+      } else {
+        localStorage.removeItem(GH_TOKEN_KEY);
+        showToast('Token removed.', 'info');
+      }
+    });
+
+    const testH = testBtn.cloneNode(true);
+    testBtn.parentNode.replaceChild(testH, testBtn);
+    testH.addEventListener('click', async () => {
+      showToast('Testing connection…', 'info');
+      const token = localStorage.getItem(GH_TOKEN_KEY);
+      if (!token) { showToast('No token saved yet.', 'error'); return; }
+      try {
+        const res = await fetch(
+          `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        if (res.ok) showToast('✓ Connection works! GitHub is ready.', 'success');
+        else        showToast(`Connection failed (${res.status}). Check your token.`, 'error');
+      } catch {
+        showToast('Network error. Check your internet connection.', 'error');
+      }
+    });
+  }
 }
 
 /* -----------------------------------------------------------------
    TOAST NOTIFICATION
 ----------------------------------------------------------------- */
-function showToast(msg) {
-  const existing = document.querySelector('.admin-toast');
-  if (existing) existing.remove();
+function showToast(msg, type = 'success') {
+  document.querySelector('.admin-toast')?.remove();
   const toast = document.createElement('div');
-  toast.className = 'admin-toast';
+  toast.className = 'admin-toast admin-toast--' + type;
   toast.textContent = msg;
-  toast.style.cssText = `
-    position:fixed; bottom:5rem; right:2rem; z-index:99999;
-    background:var(--blue); color:var(--white);
-    font-family:var(--font-display); font-size:0.75rem; letter-spacing:0.1em;
-    padding:0.75rem 1.5rem; border-radius:4px;
-    border-left:4px solid var(--gold);
-    box-shadow:0 8px 24px rgba(0,0,0,0.25);
-    animation: fade-up 0.3s ease both;
-  `;
   document.body.appendChild(toast);
-  setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity 0.3s'; setTimeout(() => toast.remove(), 350); }, 2500);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transition = 'opacity 0.35s';
+    setTimeout(() => toast.remove(), 380);
+  }, type === 'error' ? 5000 : 3000);
 }
 
 /* -----------------------------------------------------------------

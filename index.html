@@ -520,17 +520,19 @@
 
   <div class="footer__bottom">
     <span class="footer__copy">© 2025 Ten Wasp Brewing Company · Sumner, Iowa · (563) 578-9015</span>
-    <a href="https://deerflow.tech" target="_blank" rel="noopener" class="deerflow-credit" aria-label="Created by Deerflow">
-      <span aria-hidden="true">⬡</span> Created by Deerflow
-    </a>
+    <div class="footer__bottom-right">
+      <!-- Staff-only admin link — subtle, no label visible to guests -->
+      <a href="#admin" data-admin-open class="footer-staff-link" aria-label="Staff login" title="Staff">⬡</a>
+      <a href="https://deerflow.tech" target="_blank" rel="noopener" class="deerflow-credit" aria-label="Created by Deerflow">
+        <span aria-hidden="true">⬡</span> Created by Deerflow
+      </a>
+    </div>
   </div>
 </footer>
 
 <!-- ================================================================
      ADMIN PANEL
      ================================================================ -->
-<button id="admin-trigger" class="admin-trigger" title="Admin Panel" aria-label="Open admin panel">🔒</button>
-
 <div id="admin-overlay" class="admin-overlay" hidden role="dialog" aria-modal="true" aria-label="Admin Panel">
   <div class="admin-panel">
 
@@ -558,7 +560,8 @@
       <button class="admin-tab active" data-tab="beers" role="tab" aria-selected="true">Beers</button>
       <button class="admin-tab" data-tab="food" role="tab" aria-selected="false">Food</button>
       <button class="admin-tab" data-tab="hours" role="tab" aria-selected="false">Hours</button>
-      <button class="admin-tab" data-tab="announce" role="tab" aria-selected="false">Announcements</button>
+      <button class="admin-tab" data-tab="announce" role="tab" aria-selected="false">Announce</button>
+      <button class="admin-tab" data-tab="settings" role="tab" aria-selected="false">⚙ Sync</button>
     </div>
 
     <div class="admin-content">
@@ -594,6 +597,32 @@
             <label for="admin-announce-active">Show announcement banner on website</label>
           </div>
           <button class="admin-btn admin-btn--primary" id="admin-save-announce">Save Announcement</button>
+        </div>
+      </div>
+
+      <!-- SYNC / SETTINGS TAB -->
+      <div id="admin-panel-settings" class="admin-tab-panel" role="tabpanel">
+        <p class="admin-section-title">⚙ Cross-Device Sync Setup</p>
+        <div class="admin-sync-info">
+          <p>Changes you save here are pushed to <strong>GitHub</strong> and served to <strong>all visitors</strong> within ~30 seconds via Cloudflare. Each device you manage from needs this token saved once.</p>
+        </div>
+        <div class="admin-form-group" style="margin-bottom:1rem;">
+          <label>GitHub Personal Access Token</label>
+          <input type="password" id="admin-gh-token-input" placeholder="github_pat_… or ghp_…" autocomplete="off" style="font-family:var(--font-mono);letter-spacing:0.06em;">
+        </div>
+        <div style="display:flex;gap:0.75rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+          <button class="admin-btn admin-btn--primary" id="admin-save-token">Save Token on This Device</button>
+          <button class="admin-btn" id="admin-test-sync" style="background:var(--cream-dark);border:1px solid #ccc;">Test Connection</button>
+        </div>
+        <div class="admin-sync-steps">
+          <p><strong>How to get your token (one-time setup):</strong></p>
+          <ol>
+            <li>Go to <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener" style="color:var(--blue);">github.com → Settings → Developer settings → Fine-grained tokens</a></li>
+            <li>Resource owner: <strong>krugerco</strong> · Repository access: <strong>ten-wasp-brewing only</strong></li>
+            <li>Permissions → Repository permissions → <strong>Contents: Read and Write</strong></li>
+            <li>Generate token, copy it, paste above, click Save Token</li>
+          </ol>
+          <p class="admin-sync-note">🔒 The token is stored only on this device and is never shared with anyone except GitHub.</p>
         </div>
       </div>
 

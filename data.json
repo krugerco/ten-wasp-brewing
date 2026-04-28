@@ -1,0 +1,40 @@
+{
+  "beers": [
+    { "id": 1, "name": "Synthwave Portal", "style": "NEIPA", "abv": null, "ibu": null, "rating": 4.42, "price": null, "category": "hoppy", "award": null, "available": true, "desc": "The highest-rated pour in the hive. Neon-soaked tropical haze. Riwaka, Citra, Nectaron." },
+    { "id": 2, "name": "Wendy's a Lifeguard", "style": "NEIPA", "abv": null, "ibu": null, "rating": null, "price": null, "category": "hoppy", "award": "Iowa's Best Beer 2025", "available": true, "desc": "Lush mango, passionfruit, citrus bliss. Simcoe, Vic Secret, Mosaic, Citra." },
+    { "id": 3, "name": "Cake Eater", "style": "Imperial Pastry Stout", "abv": 14, "ibu": null, "rating": null, "price": null, "category": "dark-malty", "award": "Iowa's Best Beer 2025", "available": true, "desc": "Award-winning decadence. Pecans, coconut, cocoa nibs, vanilla beans." },
+    { "id": 4, "name": "Flying V", "style": "Imperial Hazy IPA", "abv": 8.2, "ibu": null, "rating": null, "price": null, "category": "hoppy", "award": null, "available": true, "desc": "Big, bold, unapologetic. Full-throttle hazy for the adventurous." },
+    { "id": 5, "name": "Look Ma, We're On Tap", "style": "Double NEIPA", "abv": 8.3, "ibu": null, "rating": 4.35, "price": null, "category": "hoppy", "award": null, "available": true, "desc": "DDH Citra, Riwaka, Vic Secret — tropical citrus piled sky high." },
+    { "id": 6, "name": "Strata in the Whirlpool", "style": "NEIPA", "abv": 7.4, "ibu": 35, "rating": 4.32, "price": null, "category": "hoppy", "award": null, "available": true, "desc": "Strata, Citra, Riwaka. Citrus with a whisper of raspberry." },
+    { "id": 7, "name": "Midlife Crisis", "style": "Red IPA", "abv": 7.7, "ibu": null, "rating": null, "price": null, "category": "hoppy", "award": null, "available": true, "desc": "Bold ruby-red IPA with caramel backbone and assertive hop character." },
+    { "id": 8, "name": "Droppin' Hops", "style": "Hazy Pale Ale", "abv": 5.2, "ibu": null, "rating": 4.14, "price": null, "category": "hoppy", "award": null, "available": true, "desc": "Sessionable haze. Citra, Krush, Cashmere, Motueka." },
+    { "id": 9, "name": "Cassville", "style": "Cream Ale", "abv": 4.8, "ibu": 10, "rating": 3.95, "price": null, "category": "lil-crushers", "award": null, "available": true, "desc": "Smooth, clean, crushable. The perfect pint for any occasion." },
+    { "id": 10, "name": "Norwegian A'Peel", "style": "Witbier", "abv": 5.8, "ibu": 14, "rating": 3.95, "price": null, "category": "lil-crushers", "award": null, "available": true, "desc": "Belgian-style wit with orange peel, coriander, Norwegian kveik yeast." },
+    { "id": 11, "name": "Pub Thumpin'", "style": "Dark Mild", "abv": 3.4, "ibu": null, "rating": null, "price": null, "category": "lil-crushers", "award": null, "available": true, "desc": "Low ABV, big flavor. A proper session ale in the British tradition." },
+    { "id": 12, "name": "Peelin' Cute", "style": "Pastry Stout", "abv": 12, "ibu": null, "rating": null, "price": null, "category": "dark-malty", "award": null, "available": true, "desc": "Rich, velvety, dangerously drinkable. A dessert in a glass." },
+    { "id": 13, "name": "Guava the Nut", "style": "Fruited Sour", "abv": 5.4, "ibu": null, "rating": 4.35, "price": null, "category": "sours", "award": null, "available": true, "desc": "Pink guava and coconut. Creamy, floral, and utterly tropical." },
+    { "id": 14, "name": "Berry Boo v2", "style": "Fruited Sour", "abv": 5.8, "ibu": null, "rating": null, "price": null, "category": "sours", "award": null, "available": true, "desc": "Blackberry and raspberry — bright, jammy, intensely berry." },
+    { "id": 15, "name": "Electric Shonk", "style": "Fruited Sour", "abv": 4.0, "ibu": 3, "rating": 3.99, "price": null, "category": "sours", "award": null, "available": true, "desc": "Mango and pineapple — electric tropical sunshine in a glass." },
+    { "id": 16, "name": "Surfer Girl", "style": "Fruited Sour", "abv": 4.0, "ibu": null, "rating": null, "price": null, "category": "sours", "award": null, "available": true, "desc": "Ride the sour wave. Fruit-forward and easy to love." },
+    { "id": 17, "name": "Root 93", "style": "House Root Beer", "abv": 0, "ibu": null, "rating": null, "price": null, "category": "non-alc", "award": null, "available": true, "desc": "Homemade root beer — two varieties brewed in-house. \"Definitely worth trying.\"" },
+    { "id": 18, "name": "Orange Cream Soda", "style": "House Soda", "abv": 0, "ibu": null, "rating": null, "price": null, "category": "non-alc", "award": null, "available": true, "desc": "Smooth, creamy, dreamy. Made right here at Ten Wasp." },
+    { "id": 19, "name": "Ginger Ale", "style": "House Soda", "abv": 0, "ibu": null, "rating": null, "price": null, "category": "non-alc", "award": null, "available": true, "desc": "House-made ginger ale with real ginger character." },
+    { "id": 20, "name": "Hop Water", "style": "Hop Water", "abv": 0, "ibu": null, "rating": null, "price": null, "category": "non-alc", "award": null, "available": true, "desc": "All the aroma of craft hops, zero alcohol. The designated driver's best friend." }
+  ],
+  "food": [
+    { "id": 1, "name": "Homemade Pizza", "desc": "Fresh-made rotating varieties. Gluten-free option available.", "badge": "Fri & Sun Only", "badgeType": "coral", "available": true, "price": null, "img": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=600&q=80" },
+    { "id": 2, "name": "Stinger Sticks", "desc": "House-made bread sticks served as cheese bread or dessert bread.", "badge": "Fan Favorite", "badgeType": "gold", "available": true, "price": null, "img": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80" },
+    { "id": 3, "name": "Bavarian Pretzels", "desc": "Warm, golden, house-made Bavarian pretzels with dipping sauce.", "badge": "Pair with Beer", "badgeType": "blue", "available": true, "price": null, "img": "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?auto=format&fit=crop&w=600&q=80" },
+    { "id": 4, "name": "Soda Floats", "desc": "House-made sodas topped with premium ice cream. A Ten Wasp signature.", "badge": "All Ages", "badgeType": "blue", "available": true, "price": null, "img": "https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?auto=format&fit=crop&w=600&q=80" }
+  ],
+  "hours": [
+    { "day": "Wednesday", "hours": "3:00 – 9:00 PM", "open": true },
+    { "day": "Thursday",  "hours": "3:00 – 9:00 PM", "open": true },
+    { "day": "Friday",    "hours": "12:00 – 9:00 PM", "open": true },
+    { "day": "Saturday",  "hours": "12:00 – 9:00 PM", "open": true },
+    { "day": "Sunday",    "hours": "12:00 – 8:00 PM", "open": true },
+    { "day": "Monday",    "hours": "Closed", "open": false },
+    { "day": "Tuesday",   "hours": "Closed", "open": false }
+  ],
+  "announcement": { "text": "", "active": false }
+}
